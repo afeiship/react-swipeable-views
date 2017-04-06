@@ -1,18 +1,17 @@
-import classNames from 'classnames';
-import Swipeable from 'react-swipeable';
+import noop from 'noop';
+import React,{PropTypes,PureComponent} from 'react';
 
-export default class extends React.Component{
+export default class extends PureComponent{
   static propTypes = {
-    cssClass:React.PropTypes.string,
-    unit:React.PropTypes.string,
-    animate:React.PropTypes.string,
-    duration:React.PropTypes.number,
-    items:React.PropTypes.array,
-    itemTemplate:React.PropTypes.func,
-    activeIndex:React.PropTypes.number,
-    onNext:React.PropTypes.func,
-    onPrev:React.PropTypes.func,
-    onChange:React.PropTypes.func,
+    unit:PropTypes.string,
+    animate:PropTypes.string,
+    duration:PropTypes.number,
+    items:PropTypes.array,
+    itemTemplate:PropTypes.func,
+    activeIndex:PropTypes.number,
+    onNext:PropTypes.func,
+    onPrev:PropTypes.func,
+    onChange:PropTypes.func,
   };
 
   static defaultProps = {
@@ -21,7 +20,10 @@ export default class extends React.Component{
     duration:0.3,
     items:[],
     itemTemplate:null,
-    activeIndex: 0
+    activeIndex: 0,
+    onNext:noop,
+    onPrev:noop,
+    onChange:noop
   };
 
   constructor(props){
@@ -43,8 +45,9 @@ export default class extends React.Component{
   }
 
   componentDidMount() {
+    const {root} = this.refs;
     this.setState({
-      bound:this.refs.root.getBoundingClientRect()
+      bound:root.getBoundingClientRect()
     });
   }
 
@@ -65,7 +68,7 @@ export default class extends React.Component{
   }
 
   updateIndex(){
-
+    //to be implement
   }
 
   syncState(){
@@ -76,21 +79,21 @@ export default class extends React.Component{
     })
   }
 
-  next(ev){
+  next(inEvent){
     this._index++;
     this.toIndex();
     setTimeout(()=>{
-      this.props.onNext && (this.props.onNext(this.state));
-      this.props.onChange && (this.props.onChange(this.state));
+      this.props.onNext(inEvent);
+      this.props.onChange(inEvent);
     })
   }
 
-  prev(ev) {
+  prev(inEvent) {
     this._index--;
     this.toIndex();
     setTimeout(()=>{
-      this.props.onPrev && (this.props.onNext(this.state));
-      this.props.onChange && (this.props.onChange(this.state));
+      this.props.onNext(inEvent);
+      this.props.onChange(inEvent);
     })
   }
 

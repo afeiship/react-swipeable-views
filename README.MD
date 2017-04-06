@@ -1,4 +1,4 @@
-#react-swipeable-views
+# react-swipeable-views
 > Abstract swipeable views for react.
 
 
@@ -8,13 +8,32 @@
 + https://yarnpkg.com/en/docs/install
 
 
-## props:
-| name | type | value | description |
-| :----| :----| :----| :----|
-| visible  | Boolean | true/false | v-show |
-
+## properties:
+```javascript
+{
+  unit:PropTypes.string,
+  animate:PropTypes.string,
+  duration:PropTypes.number,
+  items:PropTypes.array,
+  itemTemplate:PropTypes.func,
+  activeIndex:PropTypes.number,
+  onNext:PropTypes.func,
+  onPrev:PropTypes.func,
+  onChange:PropTypes.func,
+}
+```
 
 ## usage:
-```html
-<react-swipeable-views :visible="true" />
+```javascript
+import ReactSwipeableViews from 'react-swipeable-views';
+
+class xxSwiper extends ReactSwipeableViews{
+  toIndex(){
+    //to be implement
+  }
+
+  updateIndex(){
+    //to be implement
+  }
+}
 ```

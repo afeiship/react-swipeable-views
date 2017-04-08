@@ -14,8 +14,6 @@
   unit:PropTypes.string,
   animate:PropTypes.string,
   duration:PropTypes.number,
-  items:PropTypes.array,
-  itemTemplate:PropTypes.func,
   activeIndex:PropTypes.number,
   onNext:PropTypes.func,
   onPrev:PropTypes.func,

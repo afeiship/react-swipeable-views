@@ -1,5 +1,5 @@
-import React,{PropTypes,PureComponent} from 'react';
 import noop from 'noop';
+import React,{PropTypes,PureComponent} from 'react';
 
 export default class extends PureComponent{
   static propTypes = {
@@ -10,7 +10,6 @@ export default class extends PureComponent{
     onNext:PropTypes.func,
     onPrev:PropTypes.func,
     onChange:PropTypes.func,
-    onMove:PropTypes.func
   };
 
   static defaultProps = {
@@ -20,8 +19,7 @@ export default class extends PureComponent{
     activeIndex: 0,
     onNext:noop,
     onPrev:noop,
-    onChange:noop,
-    onMove:noop
+    onChange:noop
   };
 
   constructor(props){
@@ -47,53 +45,54 @@ export default class extends PureComponent{
     });
   }
 
-  play(inIndex,inCallback){
+  play(inIndex){
     this._index = inIndex + this._boundary.min;
-    this.toIndex(inCallback);
+    this.toIndex();
   }
 
-  slide(inCallback){
+  slide(){
     this.setState({
       duration:this.props.duration,
       translate:`-${this._index * 100/this._length}%`
-    },inCallback || noop);
+    });
   }
 
-  toIndex(inCallback){
-    const callback = inCallback || noop;
-    this.updateIndex();
-    this.slide(()=>{
-      this.setState({
-        activeIndex: this._index - this._boundary.min
-      },()=>{
-        callback(this);
-        this.props.onChange(this);
-      });
-    });
+  toIndex(){
+    //to be implement
   }
 
   updateIndex(){
     //to be implement
   }
 
+  syncState(){
+    setTimeout(()=>{
+      this.setState({
+        activeIndex: this._index - this._boundary.min
+      });
+    })
+  }
+
   next(inEvent){
     this._index++;
-    this.toIndex(()=>{
+    this.toIndex();
+    setTimeout(()=>{
       this.props.onNext(inEvent);
-      this.props.onMove(inEvent);
-    });
+      this.props.onChange(inEvent);
+    })
   }
 
   prev(inEvent) {
     this._index--;
-    this.toIndex(()=>{
-      this.props.onPrev(inEvent);
-      this.props.onMove(inEvent);
-    });
+    this.toIndex();
+    setTimeout(()=>{
+      this.props.onNext(inEvent);
+      this.props.onChange(inEvent);
+    })
   }
 
   onSwipingNext(ev, delta) {
-    const _translate = this._index * this.state.bound[this.state.unit];
+    var _translate = this._index * this.state.bound[this.state.unit];
     this.setState({
       duration: 0,
       translate: `${-_translate-delta}px`
@@ -101,7 +100,7 @@ export default class extends PureComponent{
   }
 
   onSwipingPrev(ev,delta){
-    const _translate = this._index * this.state.bound[this.state.unit];
+    var _translate = this._index * this.state.bound[this.state.unit];
     this.setState({
       duration:0,
       translate: `${-_translate+delta}px`

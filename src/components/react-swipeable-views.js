@@ -39,7 +39,11 @@ export default class extends PureComponent{
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
-    this.setState(nextProps);
+    this.setState(
+      Object.assign( nextProps, {
+        translate:`-${this._index * 100/this._length}%`
+      })
+    );
   }
 
   componentDidMount() {

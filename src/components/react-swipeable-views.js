@@ -65,7 +65,7 @@ export default class extends PureComponent{
       this.setState({
         activeIndex: this._index - this._boundary.min
       },()=>{
-        onChange(this);
+        this.props.onChange(this);
       });
     });
   }

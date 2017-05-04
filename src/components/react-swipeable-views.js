@@ -67,7 +67,7 @@ export default class extends PureComponent{
         activeIndex: this._index - this._boundary.min
       },()=>{
         callback(this);
-        onChange(this);
+        this.props.onChange(this);
       });
     });
   }

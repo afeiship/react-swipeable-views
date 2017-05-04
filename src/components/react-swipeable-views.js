@@ -38,10 +38,6 @@ export default class extends PureComponent{
     this.toIndex();
   }
 
-  componentWillReceiveProps(nextProps, nextContext) {
-    this.setState(nextProps);
-  }
-
   componentDidMount() {
     const {root} = this.refs;
     this.setState({

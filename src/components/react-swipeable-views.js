@@ -10,6 +10,7 @@ export default class extends PureComponent{
     onNext:PropTypes.func,
     onPrev:PropTypes.func,
     onChange:PropTypes.func,
+    onMove:PropTypes.func
   };
 
   static defaultProps = {
@@ -19,7 +20,8 @@ export default class extends PureComponent{
     activeIndex: 0,
     onNext:noop,
     onPrev:noop,
-    onChange:noop
+    onChange:noop,
+    onMove:noop
   };
 
   constructor(props){
@@ -45,9 +47,9 @@ export default class extends PureComponent{
     });
   }
 
-  play(inIndex){
+  play(inIndex,inCallback){
     this._index = inIndex + this._boundary.min;
-    this.toIndex();
+    this.toIndex(inCallback);
   }
 
   slide(inCallback){
@@ -58,33 +60,34 @@ export default class extends PureComponent{
   }
 
   toIndex(){
-    //to be implement
+    this.updateIndex();
+    this.slide(()=>{
+      this.setState({
+        activeIndex: this._index - this._boundary.min
+      },()=>{
+        onChange(this);
+      });
+    });
   }
 
   updateIndex(){
     //to be implement
   }
 
-  syncState(){
-    setTimeout(()=>{
-      this.setState({
-        activeIndex: this._index - this._boundary.min
-      });
-    })
-  }
-
   next(inEvent){
     this._index++;
-    this.toIndex();
-    this.props.onNext(inEvent);
-    this.props.onChange(inEvent);
+    this.toIndex(()=>{
+      this.props.onNext(inEvent);
+      this.props.onMove(inEvent);
+    });
   }
 
   prev(inEvent) {
     this._index--;
-    this.toIndex();
-    this.props.onNext(inEvent);
-    this.props.onChange(inEvent);
+    this.toIndex(()=>{
+      this.props.onPrev(inEvent);
+      this.props.onMove(inEvent);
+    });
   }
 
   onSwipingNext(ev, delta) {

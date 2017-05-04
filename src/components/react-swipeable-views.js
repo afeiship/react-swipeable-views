@@ -61,12 +61,11 @@ export default class extends PureComponent{
 
   toIndex(){
     this.updateIndex();
-    this.slide(()=>{
-      this.setState({
+    this.slide();
+    this.setState({
         activeIndex: this._index - this._boundary.min
-      },()=>{
-        this.props.onChange(this);
-      });
+    },()=>{
+      this.props.onChange(this);
     });
   }
 

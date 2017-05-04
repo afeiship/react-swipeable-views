@@ -1,5 +1,5 @@
-import noop from 'noop';
 import React,{PropTypes,PureComponent} from 'react';
+import noop from 'noop';
 
 export default class extends PureComponent{
   static propTypes = {
@@ -50,11 +50,11 @@ export default class extends PureComponent{
     this.toIndex();
   }
 
-  slide(){
+  slide(inCallback){
     this.setState({
       duration:this.props.duration,
       translate:`-${this._index * 100/this._length}%`
-    });
+    },inCallback || noop);
   }
 
   toIndex(){
@@ -76,23 +76,19 @@ export default class extends PureComponent{
   next(inEvent){
     this._index++;
     this.toIndex();
-    setTimeout(()=>{
-      this.props.onNext(inEvent);
-      this.props.onChange(inEvent);
-    })
+    this.props.onNext(inEvent);
+    this.props.onChange(inEvent);
   }
 
   prev(inEvent) {
     this._index--;
     this.toIndex();
-    setTimeout(()=>{
-      this.props.onNext(inEvent);
-      this.props.onChange(inEvent);
-    })
+    this.props.onNext(inEvent);
+    this.props.onChange(inEvent);
   }
 
   onSwipingNext(ev, delta) {
-    var _translate = this._index * this.state.bound[this.state.unit];
+    const _translate = this._index * this.state.bound[this.state.unit];
     this.setState({
       duration: 0,
       translate: `${-_translate-delta}px`
@@ -100,7 +96,7 @@ export default class extends PureComponent{
   }
 
   onSwipingPrev(ev,delta){
-    var _translate = this._index * this.state.bound[this.state.unit];
+    const _translate = this._index * this.state.bound[this.state.unit];
     this.setState({
       duration:0,
       translate: `${-_translate+delta}px`

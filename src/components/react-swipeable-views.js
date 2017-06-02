@@ -1,5 +1,7 @@
+import React,{PureComponent} from 'react';
+
+import PropTypes from 'prop-types';
 import noop from 'noop';
-import React,{PropTypes,PureComponent} from 'react';
 
 export default class extends PureComponent{
   static propTypes = {
